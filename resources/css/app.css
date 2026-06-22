@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    /* Aura Global Kosmetika branding (derived from logo) */
+    --color-brand-50: #fbf3e8;
+    --color-brand-100: #f6e4cf;
+    --color-brand-200: #edd0ae;
+    --color-brand-300: #e2b889;
+    --color-brand-400: #d59f63;
+    --color-brand-500: #c4874a;
+    --color-brand-600: #a86d3a;
+    --color-brand-700: #83502d;
+    --color-brand-800: #633c23;
+    --color-brand-900: #452917;
+    --color-brand-950: #2a190e;
+
+    /* Remap Tailwind blue scale to the brand palette so existing `blue-*` utilities follow the logo colors */
+    --color-blue-50: var(--color-brand-50);
+    --color-blue-100: var(--color-brand-100);
+    --color-blue-200: var(--color-brand-200);
+    --color-blue-300: var(--color-brand-300);
+    --color-blue-400: var(--color-brand-400);
+    --color-blue-500: var(--color-brand-500);
+    --color-blue-600: var(--color-brand-600);
+    --color-blue-700: var(--color-brand-700);
+    --color-blue-800: var(--color-brand-800);
+    --color-blue-900: var(--color-brand-900);
+    --color-blue-950: var(--color-brand-950);
+}
