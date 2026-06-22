@@ -9,14 +9,14 @@
     <!-- Font Awesome CDN untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body class="flex flex-col min-h-screen bg-blue-50 text-gray-900">
-    <nav class="bg-gradient-to-r from-blue-800 to-blue-950 p-4 shadow-xl">
-        <div class="container mx-auto flex justify-between items-center">
+<body class="flex min-h-screen flex-col bg-blue-50 text-slate-900 antialiased">
+    <nav class="sticky top-0 z-40 border-b border-white/10 bg-gradient-to-r from-blue-900 to-blue-950 shadow-lg shadow-blue-950/10">
+        <div class="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div class="flex items-center gap-3">
                 <div class="leading-tight">
                     <div class="flex flex-col items-center">
-                        <div class="text-white text-xl md:text-2xl font-semibold tracking-wide font-serif">AURA GLOBAL</div>
-                        <div class="text-blue-100 text-[10px] md:text-xs tracking-[0.45em] uppercase font-serif">KOSMETIKA</div>
+                        <div class="font-serif text-lg font-semibold tracking-[0.14em] text-white md:text-xl">AURA GLOBAL</div>
+                        <div class="font-serif text-[9px] uppercase tracking-[0.5em] text-blue-200 md:text-[10px]">KOSMETIKA</div>
                     </div>
                 </div>
             </div>
@@ -25,30 +25,30 @@
             @auth
                 <!-- Tombol Toggle Navigasi untuk Mobile -->
                 <div class="md:hidden">
-                    <button id="nav-toggle" class="text-white focus:outline-none">
+                    <button id="nav-toggle" type="button" aria-controls="nav-menu" aria-expanded="false" class="grid h-10 w-10 place-items-center rounded-xl border border-white/15 text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-300">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
 
                 <!-- Navigasi Utama (Tersembunyi di Mobile secara default) -->
-                <div id="nav-menu" class="hidden md:flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 mt-4 md:mt-0">
-                    <a href="{{ route('admin.index') }}" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-blue-800 transition duration-300 ease-in-out">
+                <div id="nav-menu" class="hidden md:flex md:items-center md:gap-1">
+                    <a href="{{ route('admin.index') }}" class="nav-link {{ request()->routeIs('admin.*') ? 'nav-link-active' : '' }}">
                         <i class="fas fa-user-shield mr-2"></i>Admin
                     </a>
-                    <a href="{{ route('barang.index') }}" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-blue-800 transition duration-300 ease-in-out">
+                    <a href="{{ route('barang.index') }}" class="nav-link {{ request()->routeIs('barang.*') ? 'nav-link-active' : '' }}">
                         <i class="fas fa-box mr-2"></i>Barang
                     </a>
-                    <a href="{{ route('pelanggan.index') }}" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-blue-800 transition duration-300 ease-in-out">
+                    <a href="{{ route('pelanggan.index') }}" class="nav-link {{ request()->routeIs('pelanggan.*') ? 'nav-link-active' : '' }}">
                         <i class="fas fa-users mr-2"></i>Pelanggan
                     </a>
-                    <a href="{{ route('invoice.index') }}" class="text-blue-100 hover:text-white px-3 py-2 rounded-md text-lg font-medium hover:bg-blue-800 transition duration-300 ease-in-out">
+                    <a href="{{ route('invoice.index') }}" class="nav-link {{ request()->routeIs('invoice.*') ? 'nav-link-active' : '' }}">
                         <i class="fas fa-file-invoice-dollar mr-2"></i>Invoice
                     </a>
                     
                     <!-- Tombol Logout -->
                     <form action="{{ route('logout') }}" method="POST" class="inline-block">
                         @csrf
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">
+                        <button type="submit" class="ml-0 mt-2 w-full rounded-xl border border-white/15 px-4 py-2.5 text-left text-sm font-semibold text-blue-100 transition hover:bg-white/10 hover:text-white md:ml-2 md:mt-0 md:w-auto">
                             <i class="fas fa-sign-out-alt mr-2"></i>Logout
                         </button>
                     </form>
@@ -57,7 +57,7 @@
         </div>
     </nav>
 
-    <main class="flex-grow py-8 px-4">
+    <main class="flex-grow px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
         @yield('content')
     </main>
 
@@ -75,14 +75,8 @@
                 navToggle.addEventListener('click', function() {
                     navMenu.classList.toggle('hidden');
                     navMenu.classList.toggle('flex');
-                    navMenu.classList.toggle('absolute');
-                    navMenu.classList.toggle('top-16'); /* Sesuaikan dengan tinggi navbar */
-                    navMenu.classList.toggle('left-0');
-                    navMenu.classList.toggle('w-full');
-                    navMenu.classList.toggle('bg-blue-800');
-                    navMenu.classList.toggle('p-4');
-                    navMenu.classList.toggle('shadow-lg');
-                    navMenu.classList.toggle('z-50'); /* Pastikan di atas konten lain */
+                    navMenu.classList.toggle('mobile-nav-open');
+                    navToggle.setAttribute('aria-expanded', navToggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
                 });
             }
         });

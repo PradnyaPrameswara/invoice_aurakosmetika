@@ -68,7 +68,7 @@ class InvoiceController extends Controller
         $totalPendapatan = $pendapatanQuery->sum('total_tagihan');
         
         // Mengambil daftar tahun unik dari invoice untuk dropdown filter
-        $years = Invoice::select(DB::raw('YEAR(tanggal_terbit) as year'))
+        $years = Invoice::selectRaw('EXTRACT(YEAR FROM tanggal_terbit)::integer as year')
                         ->distinct()
                         ->orderBy('year', 'desc')
                         ->pluck('year');

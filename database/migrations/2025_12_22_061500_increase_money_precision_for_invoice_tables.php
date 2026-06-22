@@ -1,35 +1,36 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
-        // Increase precision to handle large totals (e.g. 1,200,000,000.00)
-        DB::statement('ALTER TABLE `invoice` MODIFY `subtotal` DECIMAL(15,2) NOT NULL DEFAULT 0.00');
-        DB::statement('ALTER TABLE `invoice` MODIFY `total_tagihan` DECIMAL(15,2) NOT NULL DEFAULT 0.00');
-
-        // Keep column present if still exists in DB (older schema); harmless if removed later.
-        // If you already dropped `pajak`, you can remove this statement.
-        DB::statement('ALTER TABLE `invoice` MODIFY `pajak` DECIMAL(15,2) NOT NULL DEFAULT 0.00');
-
-        DB::statement('ALTER TABLE `invoice_items` MODIFY `harga_satuan_kustom` DECIMAL(15,2) NOT NULL');
-        DB::statement('ALTER TABLE `invoice_items` MODIFY `total_per_item` DECIMAL(15,2) NOT NULL');
-
-        DB::statement('ALTER TABLE `barang` MODIFY `harga_default` DECIMAL(15,2) NOT NULL');
+        $this->changePrecision(15);
     }
 
     public function down(): void
     {
-        DB::statement('ALTER TABLE `invoice` MODIFY `subtotal` DECIMAL(10,2) NOT NULL DEFAULT 0.00');
-        DB::statement('ALTER TABLE `invoice` MODIFY `total_tagihan` DECIMAL(10,2) NOT NULL DEFAULT 0.00');
-        DB::statement('ALTER TABLE `invoice` MODIFY `pajak` DECIMAL(10,2) NOT NULL DEFAULT 0.00');
+        $this->changePrecision(10);
+    }
 
-        DB::statement('ALTER TABLE `invoice_items` MODIFY `harga_satuan_kustom` DECIMAL(10,2) NOT NULL');
-        DB::statement('ALTER TABLE `invoice_items` MODIFY `total_per_item` DECIMAL(10,2) NOT NULL');
+    private function changePrecision(int $precision): void
+    {
+        Schema::table('invoice', function (Blueprint $table) use ($precision) {
+            $table->decimal('subtotal', $precision, 2)->default(0)->change();
+            $table->decimal('total_tagihan', $precision, 2)->default(0)->change();
+            $table->decimal('pajak', $precision, 2)->default(0)->change();
+        });
 
-        DB::statement('ALTER TABLE `barang` MODIFY `harga_default` DECIMAL(10,2) NOT NULL');
+        Schema::table('invoice_items', function (Blueprint $table) use ($precision) {
+            $table->decimal('harga_satuan_kustom', $precision, 2)->change();
+            $table->decimal('total_per_item', $precision, 2)->change();
+        });
+
+        Schema::table('barang', function (Blueprint $table) use ($precision) {
+            $table->decimal('harga_default', $precision, 2)->change();
+        });
     }
 };
